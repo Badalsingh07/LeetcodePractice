@@ -1,40 +1,21 @@
 class Solution {
 public:
     int maxWidthRamp(vector<int>& nums) {
-        int n=nums.size();
-        if(n==2)
-        {
-            if(nums[1]>=nums[0])
-            return 1;
-            else
-            return 0;
-
-        }
-        int start=0;
-        int end=start+1;
-        int mx=INT_MIN;
-        int sub=0;
-        for(int i=0;start<=n-2;i++){
-            if(nums[end]>=nums[start])
-              sub= end-start;
-            if(sub>=mx && sub>0)
-              mx=sub;
-            if(end==n-1){
-               start++;
-               end= start;
+        stack<int> monoStack;
+        int n = nums.size();
+        int result = 0;
+        for (int i = 0; i < n; ++i) {
+            if (monoStack.empty() || nums[monoStack.top()] > nums[i]) {
+                monoStack.push(i);
             }
-            
+        }
+        for (int j = n - 1; j >= 0; --j) {
+            while (!monoStack.empty() && nums[j] >= nums[monoStack.top()]) {
+                result = max(result, j - monoStack.top());
+                monoStack.pop();
+            }
+        }
 
-            end++;
-             sub=0;
-
-
-
-        }if(mx>=0)
-        return mx;
-        else 
-        return 0;
-
-        
+        return result;
     }
 };
