@@ -1,11 +1,19 @@
 class Solution {
 public:
-    int countSquares(vector<vector<int>>& A) {
+    int countSquares(vector<vector<int>>& matrix) {
+        int m = matrix.size();
+        if (m == 0) return 0;
+        int n = matrix[0].size();
         int res = 0;
-        for (int i = 0; i < A.size(); ++i)
-            for (int j = 0; j < A[0].size(); res += A[i][j++])
-                if (A[i][j] && i && j)
-                    A[i][j] += min({A[i - 1][j - 1], A[i - 1][j], A[i][j - 1]});
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 1 && i > 0 && j > 0) {
+                    matrix[i][j] = min({matrix[i-1][j], matrix[i][j-1], matrix[i-1][j-1]}) + 1;
+                }
+                res += matrix[i][j];
+            }
+        }
         return res;
     }
 };
